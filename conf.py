@@ -1,9 +1,9 @@
-handler_test = Handler(send_spec='tcp://0.0.0.0:$SEND_PORT',
+handler = Handler(send_spec='tcp://0.0.0.0:$SEND_PORT',
                        send_ident='$SEND_UUID',
                        recv_spec='tcp://0.0.0.0:$RECV_PORT', recv_ident='')
 
 routes = {
-    '/handlertest': handler_test
+    '/': handler
 }
 
 main = Server(
