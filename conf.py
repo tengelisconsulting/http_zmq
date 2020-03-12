@@ -1,17 +1,22 @@
+handler_test = Handler(send_spec='tcp://0.0.0.0:$SEND_PORT',
+                       send_ident='$SEND_UUID',
+                       recv_spec='tcp://0.0.0.0:$RECV_PORT', recv_ident='')
+
+routes = {
+    '/handlertest': handler_test
+}
+
 main = Server(
-    uuid="f400bf85-4538-4f7a-8908-67e313d515c2",
+    uuid="$UUID",
     access_log="/logs/access.log",
     error_log="/logs/error.log",
     chroot="./",
-    default_host="localhost",
-    name="test",
     pid_file="/run/mongrel2.pid",
-    port=6767,
-    hosts = [
-        Host(name="localhost", routes={
-            '/tests/': Dir(base='tests/', index_file='index.html',
-                             default_ctype='text/plain')
-        })
+    default_host="localhost",
+    name="mongrel",
+    port=$PORT,
+    hosts=[
+        Host(name="localhost", routes=routes)
     ]
 )
 
