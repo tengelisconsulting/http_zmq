@@ -1,10 +1,9 @@
-# functions for sync handling of mongrel2 zmq requests
-
 import json
 from typing import Dict
 from typing import NamedTuple
 
 import zmq
+import zmq.asyncio
 
 import tnetstrings
 
@@ -48,7 +47,7 @@ def connect(
         pull_port: int,
         pub_port: int
 )-> MG2Connection:
-    ctx = zmq.Context()
+    ctx = zmq.asyncio.Context()
     pull = ctx.socket(zmq.PULL)
     pub = ctx.socket(zmq.PUB)
     if sender_id:
@@ -62,10 +61,10 @@ def connect(
     )
 
 
-def recv(
+async def recv(
         con: MG2Connection
 )-> MG2Request:
-    raw_work = con.pull.recv_multipart()
+    raw_work = await con.pull.recv_multipart()
     msg = raw_work[0].decode("utf-8")
     sender, conn_id, path, rest = msg.split(' ', 3)
     headers, rest = tnetstrings.parse(rest)
